@@ -35,22 +35,22 @@
             <p>Rechercher un titre sur Deezer en utilisant le formulaire suivant :</p>
             <form class="search-form form-inline">
                 <label for="search">Titre</label>
-                <input type="text" class="form-control mb-2 mr-sm-2" id="search" placeholder="Rechercher un titre">
+                <input type="text" class="form-control mb-2 mr-sm-2" id="search" placeholder="Steve Aoki, Bangarang, The White pixel Ape" required>
 
                 <label>Trier par :</label>
                 <div class="input-group-prepend">
                     <button id="dropdown-options" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">Options</button>
+                        aria-haspopup="true" aria-expanded="false">Album</button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Album</a>
-                        <a class="dropdown-item" href="#">Artiste</a>
-                        <a class="dropdown-item" href="#">Musique</a>
-                        <a class="dropdown-item" href="#">Les plus populaires</a>
-                        <a class="dropdown-item" href="#">Les mieux notés</a>
+                        <a class="dropdown-item" href="#" value="ALBUM_ASC">Album</a>
+                        <a class="dropdown-item" href="#" value="ARTIST_ASC">Artiste</a>
+                        <a class="dropdown-item" href="#" value="TRACK_ASC">Musique</a>
+                        <a class="dropdown-item" href="#" value="RANKING">Les plus populaires</a>
+                        <a class="dropdown-item" href="#" value="RATING_ASC">Les mieux notés</a>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary mb-2">Go</button>
+                <button id="search-submit" type="submit" class="btn btn-primary mb-2">Go</button>
             </form>
         </div>
         <div id="search-result"></div>
@@ -58,14 +58,16 @@
     </main>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/jquery"></script>
+    <script src="../Scripts/script.js"></script>
 </body>
 
 </html>
