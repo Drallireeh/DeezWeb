@@ -45,11 +45,25 @@ h1 {
     width: 80vw;
 }
 
+#search-result .infos-track {
+    display: flex;
+    align-items: center;
+}
+
+#search-result .infos-track > div {
+    padding-left: 5px;
+    width: calc(100% - 61px);
+}
+
 #search-result .track {
     display: flex;
     flex-direction: column;
     padding-bottom: 20px;
     max-width: 300px;
+}
+
+#search-result .track .favorite-added {
+    background-color: green;
 }
 
 #search-result .artist-album {
