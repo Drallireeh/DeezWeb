@@ -1,0 +1,26 @@
+h1 {
+    font-size: 1.50;
+}
+
+.no-info {
+    font-size: 1.25rem;
+}
+
+.accueil-info {
+    background-color: #c8c8c8;
+    margin: 10px 50px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#accueil-display-fav {
+    display: none;
+}
+
+/* SEARCH */
+
+.search-form {
+    align-items: baseline;
+}
