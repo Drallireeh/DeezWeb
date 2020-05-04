@@ -21,6 +21,41 @@ h1 {
 
 /* SEARCH */
 
+#no-result {
+    display: none;
+    margin: auto;
+    width: 80vw;
+}
+
 .search-form {
     align-items: baseline;
+}
+
+.ellipsis {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#search-result {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: auto;
+    width: 80vw;
+}
+
+#search-result .track {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+    max-width: 300px;
+}
+
+#search-result .artist-album {
+    width: 100%;
+}
+
+#search-result .title{
+    font-weight: bold;
 }
