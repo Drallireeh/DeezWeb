@@ -13,10 +13,12 @@ $(function () {
     DisplayOneFav();
 })
 
-function randomIntFromInterval(min, max) { // min and max included 
+// Retourne un entier compris entre les valeurs min et max
+function randomIntFromInterval(min, max) { 
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+// Lorsqu'on effectue une recherche, cette fonction est appellée
 function OnSearch() {
     let url = `https://api.deezer.com/search?q=${$("#search").val()}&order=${$("#dropdown-options").attr("value")}&output=jsonp`;
     $.ajax({
@@ -76,6 +78,7 @@ function OnSearch() {
     });
 }
 
+// Permet d'ajouter un favoris
 function AddFavorites(data) {
     let listFavorites = [];
     let favorites = localStorage.getItem("favoris");
@@ -92,6 +95,7 @@ function AddFavorites(data) {
     DisplayFavorites();
 }
 
+// Permet de supprimer un favoris
 function RemoveFavorites(data) {
     let favorites = localStorage.getItem("favoris");
     let parsedFavorites = JSON.parse(favorites);
@@ -105,6 +109,7 @@ function RemoveFavorites(data) {
     DisplayFavorites();
 }
 
+// Affiche tous les favoris
 function DisplayFavorites() {
     let favorites = JSON.parse(localStorage.getItem("favoris"));
     $(".favoris-list").empty();
@@ -116,10 +121,10 @@ function DisplayFavorites() {
             $(".favoris-list").append(`
                 <div class="track">
                     <div class="infos-track">
-                        <img src=${favorites[i].album.cover_small} alt="cover album">
+                        <img src=${favorites[i].album.cover_small} alt="cover album small">
                         <div>
-                            <p class="title ellipsis">${favorites[i].title}</p>
-                            <p class="artist-album ellipsis">${favorites[i].artist.name} / ${favorites[i].album.title}</p>
+                            <p class="title ellipsis" title="${favorites[i].title}">${favorites[i].title}</p>
+                            <p class="artist-album ellipsis" title="${favorites[i].artist.name} / ${favorites[i].album.title}">${favorites[i].artist.name} / ${favorites[i].album.title}</p>
                         </div>
                     </div>
                     <audio
@@ -138,6 +143,7 @@ function DisplayFavorites() {
     }
 }
 
+// Affiche une des musiques parmis tous les favoris au hasard 
 function DisplayOneFav(prevIndex = null) {
     let favorites = JSON.parse(localStorage.getItem("favoris"));
     let accueilFavoris = $(".accueil-fav");
