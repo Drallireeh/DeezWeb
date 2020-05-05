@@ -13,6 +13,12 @@ $(function () {
     DisplayOneFav();
 })
 
+function DisplayLastSearch() {
+    let htmlSearch = sessionStorage.getItem("search");
+    console.log(htmlSearch)
+    if (htmlSearch) $("#search-result").html(htmlSearch);
+}
+
 // Retourne un entier compris entre les valeurs min et max
 function randomIntFromInterval(min, max) { 
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -97,6 +103,8 @@ function OnSearch() {
                     }
                 });
             }
+
+            sessionStorage.setItem("search", $("#search-result").html());
         }
     }).catch((error) => {
         if (error.status === 404) {
