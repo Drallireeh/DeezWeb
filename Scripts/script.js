@@ -18,6 +18,29 @@ function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+function AddTrackToHtml(album, trackTitle, artistName, previewUrl) {
+    let htmlString = `
+        <div class="track">
+            <div class="infos-track">
+                <img src=${album.cover_small} alt="cover album">
+                <div>
+                    <p class="title ellipsis" title="${trackTitle}">${trackTitle}</p>
+                    <p class="artist-album ellipsis" title="${artistName} / ${album.title}">${artistName} / ${album.title}</p>
+                </div>
+            </div>
+            <audio
+                controls
+                src="${previewUrl}">
+                Your browser does not support the
+                <code>audio</code> element.
+            </audio>
+            <button class="btn btn-secondary add-favorites favorite-added">Retirer des favoris</button>
+        </div>
+    `;
+
+    return htmlString;
+}
+
 // Lorsqu'on effectue une recherche, cette fonction est appellée
 function OnSearch() {
     let url = `https://api.deezer.com/search?q=${$("#search").val()}&order=${$("#dropdown-options").attr("value")}&output=jsonp`;
@@ -36,8 +59,8 @@ function OnSearch() {
                         <div class="infos-track">
                             <img src=${result.data[i].album.cover_small} alt="cover album">
                             <div>
-                                <p class="title ellipsis">${result.data[i].title}</p>
-                                <p class="artist-album ellipsis">${result.data[i].artist.name} / ${result.data[i].album.title}</p>
+                                <p class="title ellipsis" title="${result.data[i].title}">${result.data[i].title}</p>
+                                <p class="artist-album ellipsis" title="${result.data[i].artist.name} / ${result.data[i].album.title}">${result.data[i].artist.name} / ${result.data[i].album.title}</p>
                             </div>
                         </div>
                         <audio
@@ -74,6 +97,12 @@ function OnSearch() {
                     }
                 });
             }
+        }
+    }).catch((error) => {
+        if (error.status === 404) {
+            alert("Erreur 404. Veuillez vérifier votre réseau");
+        } else {
+            alert("Une erreur est survenue.");
         }
     });
 }
@@ -118,23 +147,8 @@ function DisplayFavorites() {
         $("#no-favoris").show();
     } else {
         for (let i = 0; i < favorites.length; i++) {
-            $(".favoris-list").append(`
-                <div class="track">
-                    <div class="infos-track">
-                        <img src=${favorites[i].album.cover_small} alt="cover album small">
-                        <div>
-                            <p class="title ellipsis" title="${favorites[i].title}">${favorites[i].title}</p>
-                            <p class="artist-album ellipsis" title="${favorites[i].artist.name} / ${favorites[i].album.title}">${favorites[i].artist.name} / ${favorites[i].album.title}</p>
-                        </div>
-                    </div>
-                    <audio
-                        controls
-                        src="${favorites[i].preview}">
-                        Your browser does not support the
-                        <code>audio</code> element.
-                    </audio>
-                    <button class="btn btn-secondary add-favorites favorite-added">Retirer des favoris</button>
-            </div>`);
+            let htmlString = AddTrackToHtml(favorites[i].album, favorites[i].title, favorites[i].artist.name, favorites[i].preview);
+            $(".favoris-list").append(htmlString);
 
             $(".add-favorites:last").click(function () {
                 RemoveFavorites(favorites[i]);
@@ -157,24 +171,8 @@ function DisplayOneFav(prevIndex = null) {
         while (randomIdx === prevIndex) {
             randomIdx = randomIntFromInterval(0, favorites.length - 1);
         }
-        accueilFavoris.append(`
-            <div class="track">
-                <div class="infos-track">
-                    <img src=${favorites[randomIdx].album.cover_small} alt="cover album">
-                    <div>
-                        <p class="title ellipsis">${favorites[randomIdx].title}</p>
-                        <p class="artist-album ellipsis">${favorites[randomIdx].artist.name} / ${favorites[randomIdx].album.title}</p>
-                    </div>
-                </div>
-                <audio
-                    controls
-                    src="${favorites[randomIdx].preview}">
-                    Your browser does not support the
-                    <code>audio</code> element.
-                </audio>
-                <button class="btn btn-secondary add-favorites favorite-added">Retirer des favoris</button>
-            </div>
-        `);
+        let htmlString = AddTrackToHtml(favorites[randomIdx].album, favorites[randomIdx].title, favorites[randomIdx].artist.name, favorites[randomIdx].preview);
+        accueilFavoris.append(htmlString);
 
         $("#another-track").off("click").click(function () {
             DisplayOneFav(randomIdx);
