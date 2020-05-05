@@ -15,7 +15,16 @@ h1 {
     justify-content: space-evenly;
 }
 
-#accueil-display-fav,
+#accueil-display-fav {
+    margin: auto;
+    display: flex;
+    width: 80vw;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 280px;
+}
+
 #no-favoris {
     display: none;
 }
@@ -65,7 +74,8 @@ h1 {
 }
 
 #search-result .track .favorite-added,
-.favoris-list .track .favorite-added
+.favoris-list .track .favorite-added,
+.accueil-fav .track .favorite-added
 {
     background-color: red;
 }

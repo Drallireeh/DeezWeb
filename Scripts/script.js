@@ -9,8 +9,13 @@ $(function () {
         e.preventDefault();
         OnSearch();
     })
-    DisplayFavorites()
+    DisplayFavorites();
+    DisplayOneFav();
 })
+
+function randomIntFromInterval(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
 function OnSearch() {
     let url = `https://api.deezer.com/search?q=${$("#search").val()}&order=${$("#dropdown-options").attr("value")}&output=jsonp`;
@@ -126,9 +131,47 @@ function DisplayFavorites() {
                     <button class="btn btn-secondary add-favorites favorite-added">Retirer des favoris</button>
             </div>`);
 
-            $(".add-favorites:last").click(function() {
+            $(".add-favorites:last").click(function () {
                 RemoveFavorites(favorites[i]);
             });
         }
+    }
+}
+
+function DisplayOneFav(prevIndex = null) {
+    let favorites = JSON.parse(localStorage.getItem("favoris"));
+    let accueilFavoris = $(".accueil-fav");
+    accueilFavoris.empty();
+
+    if (!favorites) {
+        $("#accueil-display-fav").hide();
+    } else {
+        let randomIdx = randomIntFromInterval(0, favorites.length - 1);
+        // Pour éviter qu'on ait deux fois de suite la même musique dans l'accueil
+        while (randomIdx === prevIndex) {
+            randomIdx = randomIntFromInterval(0, favorites.length - 1);
+        }
+        accueilFavoris.append(`
+            <div class="track">
+                <div class="infos-track">
+                    <img src=${favorites[randomIdx].album.cover_small} alt="cover album">
+                    <div>
+                        <p class="title ellipsis">${favorites[randomIdx].title}</p>
+                        <p class="artist-album ellipsis">${favorites[randomIdx].artist.name} / ${favorites[randomIdx].album.title}</p>
+                    </div>
+                </div>
+                <audio
+                    controls
+                    src="${favorites[randomIdx].preview}">
+                    Your browser does not support the
+                    <code>audio</code> element.
+                </audio>
+                <button class="btn btn-secondary add-favorites favorite-added">Retirer des favoris</button>
+            </div>
+        `);
+
+        $("#another-track").off("click").click(function () {
+            DisplayOneFav(randomIdx);
+        })
     }
 }
