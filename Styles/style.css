@@ -15,7 +15,8 @@ h1 {
     justify-content: space-evenly;
 }
 
-#accueil-display-fav {
+#accueil-display-fav,
+#no-favoris {
     display: none;
 }
 
@@ -37,7 +38,8 @@ h1 {
     overflow: hidden;
 }
 
-#search-result {
+#search-result,
+.favoris-list {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -45,31 +47,33 @@ h1 {
     width: 80vw;
 }
 
-#search-result .infos-track {
+.infos-track {
     display: flex;
     align-items: center;
 }
 
-#search-result .infos-track > div {
+.infos-track > div {
     padding-left: 5px;
     width: calc(100% - 61px);
 }
 
-#search-result .track {
+.track {
     display: flex;
     flex-direction: column;
     padding-bottom: 20px;
     max-width: 300px;
 }
 
-#search-result .track .favorite-added {
-    background-color: green;
+#search-result .track .favorite-added,
+.favoris-list .track .favorite-added
+{
+    background-color: red;
 }
 
-#search-result .artist-album {
+.artist-album {
     width: 100%;
 }
 
-#search-result .title{
+.title{
     font-weight: bold;
 }

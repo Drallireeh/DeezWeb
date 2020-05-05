@@ -5,9 +5,11 @@ $(function () {
         dropdown.attr("value", $(this).attr("value"));
     })
 
-    $("#search-submit").click(function () {
+    $("#search-submit").click(function (e) {
+        e.preventDefault();
         OnSearch();
     })
+    DisplayFavorites()
 })
 
 function OnSearch() {
@@ -44,7 +46,7 @@ function OnSearch() {
                 let favorites = JSON.parse(sessionStorage.getItem("favoris"));
                 if (favorites) {
                     for (let j = 0; j < favorites.length; j++) {
-                        if (favorites[j].id === result.data[i]) {
+                        if (favorites[j].id === result.data[i].id) {
                             $(".add-favorites:last").addClass("favorite-added");
                             $(".add-favorites:last").html("Retirer un favoris");
                         }
@@ -82,6 +84,7 @@ function AddFavorites(data) {
     listFavorites.push(data)
     let json = JSON.stringify(listFavorites);
     sessionStorage.setItem("favoris", json);
+    DisplayFavorites();
 }
 
 function RemoveFavorites(data) {
@@ -94,8 +97,38 @@ function RemoveFavorites(data) {
     }
     let json = JSON.stringify(parsedFavorites);
     sessionStorage.setItem("favoris", json);
+    DisplayFavorites();
 }
 
 function DisplayFavorites() {
+    let favorites = JSON.parse(sessionStorage.getItem("favoris"));
+    $(".favoris-list").empty();
 
+    if (!favorites) {
+        $("#no-favoris").show();
+    } else {
+        for (let i = 0; i < favorites.length; i++) {
+            $(".favoris-list").append(`
+                <div class="track">
+                    <div class="infos-track">
+                        <img src=${favorites[i].album.cover_small} alt="cover album">
+                        <div>
+                            <p class="title ellipsis">${favorites[i].title}</p>
+                            <p class="artist-album ellipsis">${favorites[i].artist.name} / ${favorites[i].album.title}</p>
+                        </div>
+                    </div>
+                    <audio
+                        controls
+                        src="${favorites[i].preview}">
+                        Your browser does not support the
+                        <code>audio</code> element.
+                    </audio>
+                    <button class="btn btn-secondary add-favorites favorite-added">Retirer des favoris</button>
+            </div>`);
+
+            $(".add-favorites:last").click(function() {
+                RemoveFavorites(favorites[i]);
+            });
+        }
+    }
 }
