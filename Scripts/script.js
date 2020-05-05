@@ -43,7 +43,7 @@ function OnSearch() {
                     </div>
                 `);
 
-                let favorites = JSON.parse(sessionStorage.getItem("favoris"));
+                let favorites = JSON.parse(localStorage.getItem("favoris"));
                 if (favorites) {
                     for (let j = 0; j < favorites.length; j++) {
                         if (favorites[j].id === result.data[i].id) {
@@ -73,7 +73,7 @@ function OnSearch() {
 
 function AddFavorites(data) {
     let listFavorites = [];
-    let favorites = sessionStorage.getItem("favoris");
+    let favorites = localStorage.getItem("favoris");
     if (favorites) {
         let parsedFavorites = JSON.parse(favorites);
         for (let i = 0; i < parsedFavorites.length; i++) {
@@ -83,12 +83,12 @@ function AddFavorites(data) {
     }
     listFavorites.push(data)
     let json = JSON.stringify(listFavorites);
-    sessionStorage.setItem("favoris", json);
+    localStorage.setItem("favoris", json);
     DisplayFavorites();
 }
 
 function RemoveFavorites(data) {
-    let favorites = sessionStorage.getItem("favoris");
+    let favorites = localStorage.getItem("favoris");
     let parsedFavorites = JSON.parse(favorites);
     for (let i = 0; i < parsedFavorites.length; i++) {
         if (data.id === parsedFavorites[i].id) {
@@ -96,12 +96,12 @@ function RemoveFavorites(data) {
         }
     }
     let json = JSON.stringify(parsedFavorites);
-    sessionStorage.setItem("favoris", json);
+    localStorage.setItem("favoris", json);
     DisplayFavorites();
 }
 
 function DisplayFavorites() {
-    let favorites = JSON.parse(sessionStorage.getItem("favoris"));
+    let favorites = JSON.parse(localStorage.getItem("favoris"));
     $(".favoris-list").empty();
 
     if (!favorites) {
