@@ -136,3 +136,9 @@ h2 {
 .artist-album {
     width: 100%;
 }
+
+#next-results-cnt {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}

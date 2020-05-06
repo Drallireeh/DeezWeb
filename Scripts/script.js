@@ -7,16 +7,20 @@ $(function () {
 
     $("#search-submit").click(function (e) {
         e.preventDefault();
-        OnSearch();
+        $("#search-result").html("");
+        OnSearch($("#search").val(), $("#dropdown-options").attr("value"));
     })
     DisplayFavorites();
     DisplayOneFav();
 })
 
 function DisplayLastSearch() {
-    let htmlSearch = sessionStorage.getItem("search");
-    console.log(htmlSearch)
-    if (htmlSearch) $("#search-result").html(htmlSearch);
+    let htmlSearch = sessionStorage.getItem("searchInput");
+    let htmlOptions = sessionStorage.getItem("triOptions");
+    if (htmlSearch && htmlOptions) {
+        $("#search").val(htmlSearch);
+        OnSearch(htmlSearch, htmlOptions);
+    }
 }
 
 // Retourne un entier compris entre les valeurs min et max
@@ -48,71 +52,97 @@ function AddTrackToHtml(album, trackTitle, artistName, previewUrl) {
 }
 
 // Lorsqu'on effectue une recherche, cette fonction est appellée
-function OnSearch() {
-    let url = `https://api.deezer.com/search?q=${$("#search").val()}&order=${$("#dropdown-options").attr("value")}&output=jsonp`;
+function OnSearch(searchValue, triOptions) {
+    let url = `https://api.deezer.com/search?q=${searchValue}&order=${triOptions}&output=jsonp`;
     $.ajax({
         url: url,
         dataType: "jsonp",
     }).then((result) => {
-        console.log("Résultat :", result.data);
-        $("#search-result").html("");
-        if (result.data.length == 0) {
-            $("#no-result").show();
-        } else {
-            for (let i = 0; i < result.data.length; i++) {
-                $("#search-result").append(`
-                    <div class="track">
-                        <div class="infos-track">
-                            <img src=${result.data[i].album.cover_small} alt="cover album">
-                            <div>
-                                <p class="title ellipsis" title="${result.data[i].title}">${result.data[i].title}</p>
-                                <p class="artist-album ellipsis" title="${result.data[i].artist.name} / ${result.data[i].album.title}">${result.data[i].artist.name} / ${result.data[i].album.title}</p>
-                            </div>
-                        </div>
-                        <audio
-                            controls
-                            src="${result.data[i].preview}">
-                            Your browser does not support the
-                            <code>audio</code> element.
-                        </audio>
-                        <button class="btn btn-secondary add-favorites">Ajouter aux favoris</button>
-                    </div>
-                `);
+        console.log("Résultat :", result);
+        DisplaySearch(result, searchValue, triOptions);
+    }).catch((error) => {
+        CatchAjaxError(error);
+    });
+}
 
-                let favorites = JSON.parse(localStorage.getItem("favoris"));
-                if (favorites) {
-                    for (let j = 0; j < favorites.length; j++) {
-                        if (favorites[j].id === result.data[i].id) {
-                            $(".add-favorites:last").addClass("favorite-added");
-                            $(".add-favorites:last").html("Retirer un favoris");
-                        }
+function DisplaySearch(result, searchValue, triOptions) {
+    $("#next-results-cnt").remove();
+    if (result.data.length == 0) {
+        $("#no-result").show();
+    } else {
+        for (let i = 0; i < result.data.length; i++) {
+            $("#search-result").append(`
+                <div class="track">
+                    <div class="infos-track">
+                        <img src=${result.data[i].album.cover_small} alt="cover album">
+                        <div>
+                            <p class="title ellipsis" title="${result.data[i].title}">${result.data[i].title}</p>
+                            <p class="artist-album ellipsis" title="${result.data[i].artist.name} / ${result.data[i].album.title}">${result.data[i].artist.name} / ${result.data[i].album.title}</p>
+                        </div>
+                    </div>
+                    <audio
+                        controls
+                        src="${result.data[i].preview}">
+                        Your browser does not support the
+                        <code>audio</code> element.
+                    </audio>
+                    <button class="btn btn-secondary add-favorites">Ajouter aux favoris</button>
+                </div>
+            `);
+
+            let favorites = JSON.parse(localStorage.getItem("favoris"));
+            if (favorites) {
+                for (let j = 0; j < favorites.length; j++) {
+                    if (favorites[j].id === result.data[i].id) {
+                        $(".add-favorites:last").addClass("favorite-added");
+                        $(".add-favorites:last").html("Retirer un favoris");
                     }
                 }
-
-                $(".add-favorites:last").click(function () {
-                    let el = $(this);
-                    if (el.hasClass("favorite-added")) {
-                        RemoveFavorites(result.data[i]);
-                        el.removeClass("favorite-added");
-                        el.html("Ajouter un favoris");
-                    }
-                    else {
-                        AddFavorites(result.data[i]);
-                        el.addClass("favorite-added");
-                        el.html("Retirer un favoris");
-                    }
-                });
             }
 
-            sessionStorage.setItem("search", $("#search-result").html());
+            $(".add-favorites:last").click(function () {
+                let el = $(this);
+                if (el.hasClass("favorite-added")) {
+                    RemoveFavorites(result.data[i]);
+                    el.removeClass("favorite-added");
+                    el.html("Ajouter un favoris");
+                }
+                else {
+                    AddFavorites(result.data[i]);
+                    el.addClass("favorite-added");
+                    el.html("Retirer un favoris");
+                }
+            });
         }
-    }).catch((error) => {
-        if (error.status === 404) {
-            alert("Erreur 404. Veuillez vérifier votre réseau");
-        } else {
-            alert("Une erreur est survenue.");
-        }
-    });
+
+        $("#search-result").after(`<div id="next-results-cnt"><button class="btn btn-primary" id="display-next-results">Afficher plus de résultats</button></div>`);
+        $("#display-next-results").click(function() {
+            if (result.next) {
+                $.ajax({
+                    url: result.next,
+                    dataType: "jsonp",
+                }).then((resultNext) => {
+                    DisplaySearch(resultNext, searchValue, triOptions);
+                }).catch((error) => {
+                    CatchAjaxError(error);
+                });
+            }
+        })
+
+        sessionStorage.removeItem("searchInput");
+        sessionStorage.removeItem("triOptions");
+        sessionStorage.setItem("searchInput", searchValue);
+        sessionStorage.setItem("triOptions", triOptions);
+    }
+}
+
+// Appelée en cas de .catch dans notre requête ajax
+function CatchAjaxError(error) {
+    if (error.status === 404) {
+        alert("Erreur 404. Veuillez vérifier votre réseau");
+    } else {
+        alert("Une erreur est survenue : " + error.status);
+    }
 }
 
 // Permet d'ajouter un favoris
