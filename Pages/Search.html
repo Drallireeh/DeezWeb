@@ -36,12 +36,12 @@
             <p>Rechercher un titre sur Deezer en utilisant le formulaire suivant :</p>
             <form class="search-form form-inline">
                 <label for="search">Titre</label>
-                <input type="text" class="form-control mb-2 mr-sm-2" id="search" placeholder="Steve Aoki, Bangarang, The White pixel Ape" required>
+                <input type="text" class="form-control mb-2 mr-sm-2" id="search" placeholder="Steve Aoki, Bangarang, The White pixel Ape, ...">
 
                 <label>Trier par</label>
                 <div class="input-group-prepend">
                     <button id="dropdown-options" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">Album</button>
+                        aria-haspopup="true" aria-expanded="false" value="ALBUM_ASC">Album</button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="#" value="ALBUM_ASC">Album</a>
                         <a class="dropdown-item" href="#" value="ARTIST_ASC">Artiste</a>
@@ -56,6 +56,7 @@
         </div>
         <div id="search-result"></div>
         <div class="no-info" id="no-result">Aucun résultat pour cette recherche ...</div>
+        <div class="no-info" id="minimum-carac">Vous devez entrer au minimum un caractère</div>
     </main>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

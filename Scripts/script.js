@@ -10,6 +10,11 @@ $(function () {
     $("#search-submit").click(function (e) {
         e.preventDefault();
         $("#search-result").html("");
+        if ($("#search").val().length === 0) {
+            $("#minimum-carac").show();
+            $("#display-next-results").hide();
+            return;
+        }
         OnSearch($("#search").val(), $("#dropdown-options").attr("value"));
     })
     DisplayFavorites();
@@ -27,7 +32,7 @@ function DisplayLastSearch() {
 }
 
 // Retourne un entier compris entre les valeurs min et max
-function randomIntFromInterval(min, max) { 
+function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
@@ -73,6 +78,7 @@ function OnSearch(searchValue, triOptions) {
 function DisplaySearch(result, searchValue, triOptions) {
     $("#next-results-cnt").remove();
     if (result.data.length == 0) {
+        $("#no-result").html('Aucun résultats concernant la recherche "' + $("#search").val() + '"');
         $("#no-result").show();
     } else {
         for (let i = 0; i < result.data.length; i++) {
@@ -121,9 +127,9 @@ function DisplaySearch(result, searchValue, triOptions) {
         }
 
         // Gérer l'affichage des résultats de recherche suivants
-        $("#search-result").after(`<div id="next-results-cnt"><button class="btn btn-primary" id="display-next-results">Afficher plus de résultats</button></div>`);
-        $("#display-next-results").click(function() {
-            if (result.next) {
+        if (result.next) {
+            $("#search-result").after(`<div id="next-results-cnt"><button class="btn btn-primary" id="display-next-results">Afficher plus de résultats</button></div>`);
+            $("#display-next-results").click(function () {
                 $.ajax({
                     url: result.next,
                     dataType: "jsonp",
@@ -132,8 +138,8 @@ function DisplaySearch(result, searchValue, triOptions) {
                 }).catch((error) => {
                     CatchAjaxError(error);
                 });
-            }
-        })
+            });
+        }
 
         // Stockage pour afficher au onload de la page la dernière recherche
         sessionStorage.removeItem("searchInput");
@@ -145,6 +151,7 @@ function DisplaySearch(result, searchValue, triOptions) {
 
 // Appelée en cas de .catch dans notre requête ajax
 function CatchAjaxError(error) {
+    console.log(error);
     if (error.status === 404) {
         alert("Erreur 404. Veuillez vérifier l'url de requête");
     } else {

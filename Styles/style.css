@@ -53,10 +53,16 @@ h2 {
 
 /* SEARCH */
 
-#no-result {
+#no-result, #minimum-carac {
     display: none;
     margin: auto;
     width: 80vw;
+}
+
+#minimum-carac {
+    color: red;
+    text-align: center;
+    font-size: 1.50rem;
 }
 
 .search-form {
@@ -94,7 +100,7 @@ h2 {
     flex-wrap: wrap;
     justify-content: space-between;
     margin: auto;
-    width: 80vw;
+    width: 75vw;
 }
 
 /* Tracks */
