@@ -57,7 +57,7 @@ function AddTrackToHtml(album, trackTitle, artistName, previewUrl) {
 
 // Lorsqu'on effectue une recherche, cette fonction est appellée
 function OnSearch(searchValue, triOptions) {
-    let url = `https://api.dezer.com/search?q=${searchValue}&order=${triOptions}&output=jsonp`;
+    let url = `https://api.deezer.com/search?q=${searchValue}&order=${triOptions}&output=jsonp`;
     $.ajax({
         url: url,
         dataType: "jsonp",
