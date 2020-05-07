@@ -9,3 +9,5 @@ Listes des fonctionnalités :
 Listes des fonctionnalités bonus : 
 
 - Lorsqu'on effectue une recherche, et qu'on retourne soit à l'acceuil soit dans les favoris, lorsqu'on reviens à la page de recherche, il y a toujours les résultats de la recherche précédente (Marche via session storage)
+- Affichage des résultats de recherche supplémentaires via boutton
+- Gestion de codes d'erreur

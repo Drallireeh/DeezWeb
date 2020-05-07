@@ -1,10 +1,12 @@
 $(function () {
+    // Gestion de la dropdown d'options
     $(".dropdown-menu a").click(function () {
         let dropdown = $("#dropdown-options");
         dropdown.html($(this).html());
         dropdown.attr("value", $(this).attr("value"));
     })
 
+    // Recherche clic
     $("#search-submit").click(function (e) {
         e.preventDefault();
         $("#search-result").html("");
@@ -14,6 +16,7 @@ $(function () {
     DisplayOneFav();
 })
 
+// Affiche la dernière recherche éffectuée lorsqu'on reviens sur la page 
 function DisplayLastSearch() {
     let htmlSearch = sessionStorage.getItem("searchInput");
     let htmlOptions = sessionStorage.getItem("triOptions");
@@ -28,6 +31,7 @@ function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+// Ajout du contenu html pour afficher une musique
 function AddTrackToHtml(album, trackTitle, artistName, previewUrl) {
     let htmlString = `
         <div class="track">
@@ -53,7 +57,7 @@ function AddTrackToHtml(album, trackTitle, artistName, previewUrl) {
 
 // Lorsqu'on effectue une recherche, cette fonction est appellée
 function OnSearch(searchValue, triOptions) {
-    let url = `https://api.deezer.com/search?q=${searchValue}&order=${triOptions}&output=jsonp`;
+    let url = `https://api.dezer.com/search?q=${searchValue}&order=${triOptions}&output=jsonp`;
     $.ajax({
         url: url,
         dataType: "jsonp",
@@ -65,6 +69,7 @@ function OnSearch(searchValue, triOptions) {
     });
 }
 
+// Affiche les résultats de la recherche
 function DisplaySearch(result, searchValue, triOptions) {
     $("#next-results-cnt").remove();
     if (result.data.length == 0) {
@@ -115,6 +120,7 @@ function DisplaySearch(result, searchValue, triOptions) {
             });
         }
 
+        // Gérer l'affichage des résultats de recherche suivants
         $("#search-result").after(`<div id="next-results-cnt"><button class="btn btn-primary" id="display-next-results">Afficher plus de résultats</button></div>`);
         $("#display-next-results").click(function() {
             if (result.next) {
@@ -129,6 +135,7 @@ function DisplaySearch(result, searchValue, triOptions) {
             }
         })
 
+        // Stockage pour afficher au onload de la page la dernière recherche
         sessionStorage.removeItem("searchInput");
         sessionStorage.removeItem("triOptions");
         sessionStorage.setItem("searchInput", searchValue);
@@ -139,9 +146,9 @@ function DisplaySearch(result, searchValue, triOptions) {
 // Appelée en cas de .catch dans notre requête ajax
 function CatchAjaxError(error) {
     if (error.status === 404) {
-        alert("Erreur 404. Veuillez vérifier votre réseau");
+        alert("Erreur 404. Veuillez vérifier l'url de requête");
     } else {
-        alert("Une erreur est survenue : " + error.status);
+        alert("Une erreur est survenue : Code d'erreur " + error.status);
     }
 }
 
