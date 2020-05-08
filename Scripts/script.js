@@ -9,7 +9,7 @@ $(function () {
     // Recherche clic
     $("#search-submit").click(function (e) {
         e.preventDefault();
-        $("#search-result").html("");
+        $("#search-result").empty();
         if ($("#search").val().length === 0) {
             $("#minimum-carac").show();
             $("#display-next-results").hide();
@@ -53,7 +53,7 @@ function AddTrackToHtml(album, trackTitle, artistName, previewUrl) {
                 Your browser does not support the
                 <code>audio</code> element.
             </audio>
-            <button class="btn btn-secondary add-favorites favorite-added">Retirer des favoris</button>
+            <button class="btn btn-secondary add-favorites favorite-added"><i class="fas fa-heart-broken"></i> Retirer des favoris</button>
         </div>
     `;
 
@@ -97,7 +97,7 @@ function DisplaySearch(result, searchValue, triOptions) {
                         Your browser does not support the
                         <code>audio</code> element.
                     </audio>
-                    <button class="btn btn-secondary add-favorites">Ajouter aux favoris</button>
+                    <button class="btn btn-secondary add-favorites"><i class="far fa-heart"></i> Ajouter aux favoris</button>
                 </div>
             `);
 
@@ -106,7 +106,7 @@ function DisplaySearch(result, searchValue, triOptions) {
                 for (let j = 0; j < favorites.length; j++) {
                     if (favorites[j].id === result.data[i].id) {
                         $(".add-favorites:last").addClass("favorite-added");
-                        $(".add-favorites:last").html("Retirer un favoris");
+                        $(".add-favorites:last").html('<i class="fas fa-heart-broken"></i> Retirer un favoris');
                     }
                 }
             }
@@ -116,12 +116,12 @@ function DisplaySearch(result, searchValue, triOptions) {
                 if (el.hasClass("favorite-added")) {
                     RemoveFavorites(result.data[i]);
                     el.removeClass("favorite-added");
-                    el.html("Ajouter un favoris");
+                    el.html('<i class="far fa-heart"></i> Ajouter un favoris');
                 }
                 else {
                     AddFavorites(result.data[i]);
                     el.addClass("favorite-added");
-                    el.html("Retirer un favoris");
+                    el.html('<i class="fas fa-heart-broken"></i> Retirer un favoris');
                 }
             });
         }
