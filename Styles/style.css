@@ -15,8 +15,9 @@ h2 {
 }
 
 .accueil-info {
-    background-color: #c8c8c8;
+    background-color: #c5e0dc;
     margin: 10px 50px;
+    margin-bottom: 25px;
     padding: 0 10px;
     height: 200px;
     display: flex;
@@ -123,7 +124,7 @@ h2 {
 .track {
     display: flex;
     flex-direction: column;
-    padding-bottom: 20px;
+    padding-bottom: 40px;
     max-width: 300px;
 }
 
