@@ -1,3 +1,5 @@
+Pour lancer le projet, un simple live-server suffit
+
 Listes des fonctionnalités :
 
 - Possibilité d'ajouter un favoris lors de la recherche, ainsi que de le supprimer directement une fois ajouté
